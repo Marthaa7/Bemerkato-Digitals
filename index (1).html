@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bemerkato Digitals & Promotion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:      #0b0f0c;
+      --surface: #0f1510;
+      --card:    #131a14;
+      --accent:  #3dd668;
+      --accent2: #1B2A6B;
+      --glow:    rgba(61,214,104,0.18);
+      --text:    #eef5f0;
+      --muted:   #7a9980;
+      --border:  #1e2e21;
+      --navy:    #1B2A6B;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Noise */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 3rem;
+      background: rgba(11,15,12,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 48px; width: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(61,214,104,0.4));
+    }
+    .nav-logo-text {
+      display: flex; flex-direction: column; line-height: 1.1;
+    }
+    .nav-logo-text span:first-child {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem; letter-spacing: 0.1em;
+      color: var(--text);
+    }
+    .nav-logo-text span:last-child {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent); color: var(--bg);
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.6rem 1.4rem; border: none; cursor: pointer;
+      text-decoration: none; transition: background 0.2s, box-shadow 0.2s;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: #55ee7e; box-shadow: 0 0 20px rgba(61,214,104,0.4); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 9rem 3rem 4rem; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 50% at 75% 50%, rgba(61,214,104,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 35% 35% at 10% 80%, rgba(27,42,107,0.15) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(61,214,104,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61,214,104,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; max-width: 900px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); background: rgba(61,214,104,0.08);
+      border: 1px solid rgba(61,214,104,0.25);
+      padding: 0.35rem 1rem; margin-bottom: 2rem;
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 1.8rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero p {
+      font-size: 1.1rem; color: var(--muted); max-width: 520px;
+      line-height: 1.7; margin-bottom: 2.5rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; }
+    .btn-primary {
+      background: var(--accent); color: var(--bg);
+      font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 1rem 2rem; border: none; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      border-radius: 2px;
+    }
+    .btn-primary:hover { background: #55ee7e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,214,104,0.3); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      font-family: 'Space Mono', monospace; font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 1rem 2rem; border: 1px solid var(--border);
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: border-color 0.2s, color 0.2s; border-radius: 2px;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-logo-float {
+      position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+      opacity: 0.07; width: 420px; pointer-events: none;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 3rem;
+      display: flex; align-items: center; gap: 0.8rem;
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase;
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+    .scroll-line { width: 50px; height: 1px; background: var(--muted); position: relative; overflow: hidden; }
+    .scroll-line::after {
+      content: ''; position: absolute; left: -100%; top: 0;
+      width: 100%; height: 100%; background: var(--accent);
+      animation: scanline 2s 1s infinite;
+    }
+
+    /* ── TICKER ── */
+    .ticker { background: var(--accent); padding: 0.75rem 0; overflow: hidden; white-space: nowrap; }
+    .ticker-track { display: inline-flex; gap: 4rem; animation: ticker 22s linear infinite; }
+    .ticker-item { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.12em; color: var(--bg); }
+    .ticker-dot { color: rgba(11,15,12,0.4); margin-right: 4rem; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 7rem 3rem; }
+    .section-label {
+      font-family: 'Space Mono', monospace; font-size: 0.68rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.03em; line-height: 1; margin-bottom: 1.5rem;
+    }
+    .section-subtitle {
+      font-size: 1rem; color: var(--muted); max-width: 500px;
+      line-height: 1.7; margin-bottom: 3.5rem;
+    }
+
+    /* ── SERVICES ── */
+    .services { background: var(--surface); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--card); padding: 2.5rem 2rem;
+      position: relative; overflow: hidden; cursor: default;
+      transition: background 0.3s;
+    }
+    .service-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width 0.4s ease;
+    }
+    .service-card:hover { background: #161e17; }
+    .service-card:hover::after { width: 100%; }
+
+    .service-icon-wrap {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: rgba(61,214,104,0.1);
+      border: 1px solid rgba(61,214,104,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.4rem;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .service-card:hover .service-icon-wrap {
+      background: rgba(61,214,104,0.18);
+      box-shadow: 0 0 20px rgba(61,214,104,0.2);
+    }
+    .service-icon-wrap svg { width: 24px; height: 24px; }
+
+    .service-num {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.18em; color: var(--accent); margin-bottom: 0.8rem;
+    }
+    .service-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+      letter-spacing: 0.05em; margin-bottom: 0.8rem;
+    }
+    .service-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WHY US ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .why-visual { position: relative; }
+    .why-big-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 14vw, 12rem); line-height: 1;
+      color: transparent; -webkit-text-stroke: 1px rgba(61,214,104,0.2);
+      user-select: none;
+    }
+    .why-badge {
+      position: absolute; bottom: 2rem; right: 2rem;
+      background: var(--accent); color: var(--bg);
+      padding: 1.2rem 1.8rem; text-align: center;
+      border-radius: 2px;
+    }
+    .why-badge strong { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; display: block; line-height: 1; }
+    .why-badge small { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+    .why-points { display: flex; flex-direction: column; gap: 1.8rem; }
+    .why-point { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .why-point-icon {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(61,214,104,0.08); border: 1px solid rgba(61,214,104,0.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .why-point-icon svg { width: 18px; height: 18px; }
+    .why-point h4 { font-weight: 700; font-size: 1rem; margin-bottom: 0.3rem; }
+    .why-point p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── PORTFOLIO ── */
+    .portfolio { background: var(--bg); }
+    .portfolio-filters { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .filter-btn {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.5rem 1.1rem; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer;
+      transition: all 0.2s; border-radius: 2px;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent); border-color: var(--accent); color: var(--bg);
+    }
+    .portfolio-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .portfolio-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 4px; overflow: hidden; cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .portfolio-item:hover {
+      border-color: var(--accent); transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(61,214,104,0.12);
+    }
+    .video-thumb { position: relative; width: 100%; aspect-ratio: 9/16; background: #050805; overflow: hidden; }
+    .video-thumb.landscape { aspect-ratio: 16/9; }
+    .video-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .play-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.38); transition: background 0.3s; gap: 0.6rem;
+    }
+    .portfolio-item:hover .play-overlay { background: rgba(0,0,0,0.15); }
+    .play-btn {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 28px rgba(61,214,104,0.5); transition: transform 0.25s;
+    }
+    .portfolio-item:hover .play-btn { transform: scale(1.15); }
+    .play-btn svg { width: 22px; height: 22px; fill: var(--bg); margin-left: 3px; }
+    .video-counter {
+      font-family: 'Space Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.5);
+    }
+    .portfolio-bar {
+      padding: 0.9rem 1.2rem; display: flex; align-items: center;
+      justify-content: space-between; border-top: 1px solid var(--border);
+    }
+    .portfolio-tag { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .portfolio-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.95); z-index: 500;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-inner {
+      position: relative; width: min(94vw, 520px);
+      background: var(--card); border: 1px solid var(--border);
+      overflow: hidden; border-radius: 4px;
+    }
+    .modal-video { width: 100%; max-height: 80vh; display: block; background: #000; }
+    .modal-info { padding: 1rem 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .modal-text { flex: 1; }
+    .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.05em; line-height: 1; margin-bottom: 0.25rem; }
+    .modal-tag { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .modal-close {
+      position: absolute; top: 0.7rem; right: 0.7rem;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--border);
+      color: var(--text); width: 36px; height: 36px; font-size: 1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      z-index: 10; transition: background 0.2s; border-radius: 4px;
+    }
+    .modal-close:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .modal-nav { display: flex; gap: 0.4rem; }
+    .modal-nav button {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); width: 32px; height: 32px; font-size: 0.9rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; border-radius: 3px;
+    }
+    .modal-nav button:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .modal-counter { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--surface); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info { display: flex; flex-direction: column; gap: 0; }
+    .contact-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+    }
+    .contact-item:first-child { padding-top: 0; }
+    .contact-item:last-child { border-bottom: none; }
+    .contact-icon-wrap {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(61,214,104,0.08); border: 1px solid rgba(61,214,104,0.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .contact-icon-wrap svg { width: 20px; height: 20px; }
+    .contact-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+    .contact-val { font-size: 1rem; font-weight: 500; }
+    .contact-val a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .contact-val a:hover { color: var(--accent); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+    .form-group label { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--text); padding: 0.85rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+      outline: none; transition: border-color 0.2s;
+      width: 100%; resize: none; border-radius: 3px;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(61,214,104,0.08); }
+    .form-group select option { background: #131a14; }
+    .submit-btn {
+      background: var(--accent); color: var(--bg); border: none;
+      padding: 1rem 2rem; font-family: 'Space Mono', monospace;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      align-self: flex-start; border-radius: 2px;
+    }
+    .submit-btn:hover { background: #55ee7e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,214,104,0.3); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 2.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 0.8rem; }
+    .footer-brand img { height: 40px; width: 40px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(61,214,104,0.3)); }
+    .footer-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.08em; color: var(--text); }
+    .footer-name span { color: var(--accent); }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+    .footer-social { display: flex; gap: 0.8rem; }
+    .footer-social a {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--card);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: border-color 0.2s, background 0.2s;
+    }
+    .footer-social a:hover { border-color: var(--accent); background: rgba(61,214,104,0.1); }
+    .footer-social a svg { width: 16px; height: 16px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+      .hero-logo-float { display: none; }
+      .hero-scroll { left: 1.5rem; }
+      .why-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .why-big-num { font-size: 8rem; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+      .portfolio-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#home" class="nav-logo">
+      <img src="./photo_2025-03-20_16-15-57.jpg" alt="Bemerkato Logo"/>
+      <div class="nav-logo-text">
+        <span>BEMERKATO</span>
+        <span>Digitals & Promotion</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Get Started</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <img src="logo.png" alt="" class="hero-logo-float"/>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Addis Ababa, Ethiopia
+      </div>
+      <h1>YOUR BRAND<br/><em>DESERVES</em><br/>TO BE SEEN</h1>
+      <p>Bemerkato Digitals & Promotion is your full-service creative partner — from social media strategy to stunning visuals that drive real results.</p>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn-primary">See Our Work</a>
+        <a href="#contact" class="btn-secondary">Talk to Us</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll to explore
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">Social Media Marketing <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Content Creation <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Graphics Design <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Video Editing <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Social Media Advertising <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Digital Promotion <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Social Media Marketing <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Content Creation <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Graphics Design <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Video Editing <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Social Media Advertising <span class="ticker-dot">✦</span></span>
+      <span class="ticker-item">Digital Promotion <span class="ticker-dot">✦</span></span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">OUR SERVICES</h2>
+    <p class="section-subtitle">Everything your brand needs to grow online — crafted with precision and purpose.</p>
+    <div class="services-grid reveal">
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <div class="service-num">01 —</div>
+        <div class="service-name">Social Media Marketing</div>
+        <p class="service-desc">We build and execute strategies that grow your audience, increase engagement, and turn followers into loyal customers.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+          </svg>
+        </div>
+        <div class="service-num">02 —</div>
+        <div class="service-name">Social Media Advertising</div>
+        <p class="service-desc">Targeted paid campaigns across platforms that put your message in front of exactly the right people at the right time.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </div>
+        <div class="service-num">03 —</div>
+        <div class="service-name">Content Creation</div>
+        <p class="service-desc">Compelling captions, posts, and storytelling content that resonate with your audience and reflect your brand voice.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="17" r="2"/>
+            <path d="M12 22H6.5a3.5 3.5 0 0 1 0-7c.04 0 .08 0 .12.01A5.002 5.002 0 0 1 16 13c.18 0 .36.01.53.03"/>
+            <path d="M17.29 13.71 21 17l-3.71 3.29"/>
+          </svg>
+        </div>
+        <div class="service-num">04 —</div>
+        <div class="service-name">Graphics Design</div>
+        <p class="service-desc">Eye-catching visuals — from logos and brand kits to social posts and banners — designed to make your brand unforgettable.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <div class="service-num">05 —</div>
+        <div class="service-name">Video Editing</div>
+        <p class="service-desc">Professional video editing that transforms raw footage into polished content ready for Reels, TikTok, YouTube, and beyond.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.86 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div class="service-num">06 —</div>
+        <div class="service-name">Channel Ads & Promotion</div>
+        <p class="service-desc">Amplify your channel's reach with targeted promotional campaigns and ad placements that drive real, measurable growth.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="why-grid">
+      <div class="why-visual reveal">
+        <div class="why-big-num">BD</div>
+        <div class="why-badge">
+          <strong>100%</strong>
+          <small>Client Focused</small>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Why Choose Us</div>
+        <h2 class="section-title">WE MAKE YOUR BRAND MATTER</h2>
+        <div class="why-points reveal">
+
+          <div class="why-point">
+            <div class="why-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Local Expertise, Global Standards</h4>
+              <p>We understand the Ethiopian market deeply while applying world-class digital marketing practices to your campaigns.</p>
+            </div>
+          </div>
+
+          <div class="why-point">
+            <div class="why-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Full-Service Creative Studio</h4>
+              <p>From strategy to design to video — everything under one roof, so your brand stays consistent and your process stays simple.</p>
+            </div>
+          </div>
+
+          <div class="why-point">
+            <div class="why-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Results You Can Measure</h4>
+              <p>We track performance, optimize in real-time, and report transparently so you always know your investment is working.</p>
+            </div>
+          </div>
+
+          <div class="why-point">
+            <div class="why-point-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Creative That Converts</h4>
+              <p>Beautiful isn't enough — our content is designed to engage, persuade, and turn audiences into paying customers.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="portfolio">
+    <div class="section-label">Our Work</div>
+    <h2 class="section-title">PREVIOUS WORKS</h2>
+    <p class="section-subtitle">Real projects, real results — click any video to watch it full screen.</p>
+
+    <div class="portfolio-filters reveal">
+      <button class="filter-btn active" onclick="filterPortfolio('all', this)">All (9)</button>
+      <button class="filter-btn" onclick="filterPortfolio('video', this)">Video Edits</button>
+      <button class="filter-btn" onclick="filterPortfolio('social', this)">Social Media</button>
+      <button class="filter-btn" onclick="filterPortfolio('promo', this)">Promotions</button>
+      <button class="filter-btn" onclick="filterPortfolio('content', this)">Content</button>
+    </div>
+
+    <div class="portfolio-grid reveal" id="portfolio-grid">
+      <div class="portfolio-item" data-category="video" onclick="openModal(0)">
+        <div class="video-thumb landscape"><video src="video1.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">01 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Video Edit</span><span class="portfolio-name">Promo Reel #1</span></div>
+      </div>
+      <div class="portfolio-item" data-category="social" onclick="openModal(1)">
+        <div class="video-thumb"><video src="video2.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">02 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Social Media</span><span class="portfolio-name">Campaign Video #2</span></div>
+      </div>
+      <div class="portfolio-item" data-category="social" onclick="openModal(2)">
+        <div class="video-thumb"><video src="video3.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">03 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">TikTok</span><span class="portfolio-name">TikTok Edit #3</span></div>
+      </div>
+      <div class="portfolio-item" data-category="promo" onclick="openModal(3)">
+        <div class="video-thumb"><video src="video4.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">04 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Promotion</span><span class="portfolio-name">Brand Promo #4</span></div>
+      </div>
+      <div class="portfolio-item" data-category="content" onclick="openModal(4)">
+        <div class="video-thumb"><video src="video5.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">05 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Content</span><span class="portfolio-name">Content Clip #5</span></div>
+      </div>
+      <div class="portfolio-item" data-category="content" onclick="openModal(5)">
+        <div class="video-thumb"><video src="video6.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">06 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Content</span><span class="portfolio-name">Content Clip #6</span></div>
+      </div>
+      <div class="portfolio-item" data-category="promo" onclick="openModal(6)">
+        <div class="video-thumb"><video src="video7.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">07 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Promotion</span><span class="portfolio-name">Brand Promo #7</span></div>
+      </div>
+      <div class="portfolio-item" data-category="video" onclick="openModal(7)">
+        <div class="video-thumb landscape"><video src="video8.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">08 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Best Edits</span><span class="portfolio-name">CC Best Edits #8</span></div>
+      </div>
+      <div class="portfolio-item" data-category="video" onclick="openModal(8)">
+        <div class="video-thumb landscape"><video src="video9.mp4" muted preload="metadata" loop></video>
+          <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><span class="video-counter">09 / 09</span></div></div>
+        <div class="portfolio-bar"><span class="portfolio-tag">Video Edit</span><span class="portfolio-name">Showreel #9</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modal" onclick="handleBackdropClick(event)">
+    <div class="modal-inner">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <video class="modal-video" id="modal-video" controls playsinline></video>
+      <div class="modal-info">
+        <div class="modal-text">
+          <div class="modal-title" id="modal-title">Video Title</div>
+          <div class="modal-tag" id="modal-tag">Category</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <div class="modal-counter" id="modal-counter">1 / 9</div>
+          <div class="modal-nav">
+            <button onclick="navigateModal(-1)">‹</button>
+            <button onclick="navigateModal(1)">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">LET'S WORK TOGETHER</h2>
+    <p class="section-subtitle">Ready to take your brand to the next level? Reach out and let's make it happen.</p>
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.86 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="contact-label">Call Us</div>
+            <div class="contact-val"><a href="tel:+251982204745">+251 982 204 745</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="contact-label">Telegram</div>
+            <div class="contact-val"><a href="https://t.me/teoflona1212" target="_blank">@teoflona1212</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-val">Addis Ababa, Ethiopia</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <div class="contact-label">Working Hours</div>
+            <div class="contact-val">Mon – Sat, 8 AM – 7 PM EAT</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Abebe Girma"/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+251 9XX XXX XXX"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Service Needed</label>
+          <select>
+            <option value="">Select a service…</option>
+            <option>Social Media Marketing</option>
+            <option>Social Media Advertising</option>
+            <option>Content Creation</option>
+            <option>Graphics Design</option>
+            <option>Video Editing</option>
+            <option>Channel Ads & Promotion</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell Us About Your Project</label>
+          <textarea rows="5" placeholder="Describe your brand and what you're looking to achieve…"></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleSubmit(this)">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img src="logo.png" alt="Bemerkato Logo"/>
+      <div class="footer-name">BEMER<span>KATO</span> DIGITALS</div>
+    </div>
+    <div class="footer-copy">© 2025 Bemerkato Digitals & Promotion · Addis Ababa, Ethiopia</div>
+    <div class="footer-social">
+      <!-- Telegram -->
+      <a href="https://t.me/teoflona1212" target="_blank" title="Telegram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </a>
+      <!-- Phone -->
+      <a href="tel:+251982204745" title="Call Us">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3dd668" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.86 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const videos = [
+      { src: 'video1.mp4', title: 'Promo Reel #1',     tag: 'Video Edit'  },
+      { src: 'video2.mp4', title: 'Campaign Video #2', tag: 'Social Media' },
+      { src: 'video3.mp4', title: 'TikTok Edit #3',    tag: 'TikTok'      },
+      { src: 'video4.mp4', title: 'Brand Promo #4',    tag: 'Promotion'   },
+      { src: 'video5.mp4', title: 'Content Clip #5',   tag: 'Content'     },
+      { src: 'video6.mp4', title: 'Content Clip #6',   tag: 'Content'     },
+      { src: 'video7.mp4', title: 'Brand Promo #7',    tag: 'Promotion'   },
+      { src: 'video8.mp4', title: 'CC Best Edits #8',  tag: 'Best Edits'  },
+      { src: 'video9.mp4', title: 'Showreel #9',       tag: 'Video Edit'  },
+    ];
+    let currentIndex = 0;
+
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+      const vid = item.querySelector('video');
+      if (!vid) return;
+      item.addEventListener('mouseenter', () => { vid.currentTime = 0; vid.play(); });
+      item.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+    });
+
+    function openModal(index) {
+      currentIndex = index;
+      loadModal(index);
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function loadModal(index) {
+      const v = videos[index];
+      const mv = document.getElementById('modal-video');
+      mv.src = v.src; mv.load(); mv.play();
+      document.getElementById('modal-title').textContent = v.title;
+      document.getElementById('modal-tag').textContent = v.tag;
+      document.getElementById('modal-counter').textContent = `${index + 1} / ${videos.length}`;
+    }
+    function closeModal() {
+      const mv = document.getElementById('modal-video');
+      mv.pause(); mv.src = '';
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function navigateModal(dir) {
+      currentIndex = (currentIndex + dir + videos.length) % videos.length;
+      loadModal(currentIndex);
+    }
+    function handleBackdropClick(e) {
+      if (e.target === document.getElementById('modal')) closeModal();
+    }
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('modal').classList.contains('open')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowRight') navigateModal(1);
+      if (e.key === 'ArrowLeft') navigateModal(-1);
+    });
+
+    function filterPortfolio(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.style.display = (category === 'all' || item.dataset.category === category) ? '' : 'none';
+      });
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function handleSubmit(btn) {
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#1a7f4e';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    }
+  </script>
+</body>
+</html>
